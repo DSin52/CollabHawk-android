@@ -86,7 +86,11 @@
         android:ems="10"
         android:gravity="center"
         android:hint="Last Name"
+<<<<<<< HEAD
         android:inputType="textNoSuggestions|textCapWords"
+=======
+        android:inputType="textNoSuggestions"
+>>>>>>> b90496b1a47d21fa7d23af2def28b79ec2dd926c
         fontawesometext:be_roundedCorners="true"
         fontawesometext:be_state="success" >
     </com.beardedhen.androidbootstrap.BootstrapEditText>
@@ -101,7 +105,11 @@
         android:ems="10"
         android:gravity="center"
         android:hint="First Name"
+<<<<<<< HEAD
         android:inputType="textNoSuggestions|textCapWords"
+=======
+        android:inputType="textNoSuggestions"
+>>>>>>> b90496b1a47d21fa7d23af2def28b79ec2dd926c
         fontawesometext:be_roundedCorners="true"
         fontawesometext:be_state="success" >
 

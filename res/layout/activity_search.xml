@@ -18,7 +18,11 @@
         android:layout_marginTop="4dp"
         android:layout_toLeftOf="@+id/searchButton"
         android:ems="10"
+<<<<<<< HEAD
         android:hint="Search Points Of Interest"
+=======
+        android:hint="Search Query" 
+>>>>>>> b90496b1a47d21fa7d23af2def28b79ec2dd926c
         fontawesometext:be_roundedCorners="true"
         fontawesometext:be_state="info" 
         >
