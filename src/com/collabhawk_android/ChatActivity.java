@@ -19,20 +19,21 @@ import android.view.Menu;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.ArrayAdapter;
-import android.widget.Button;
-import android.widget.EditText;
 import android.widget.ListView;
+
+import com.beardedhen.androidbootstrap.BootstrapButton;
+import com.beardedhen.androidbootstrap.BootstrapEditText;
 
 
 public class ChatActivity extends Activity{
-	private EditText input_text;
-	private Button btn_Send;
+	private BootstrapEditText input_text;
+	private BootstrapButton btn_Send;
 	private ListView listView;
 	private SocketListener socketListener;
 	SocketIO socket;
 	ArrayList<String> messages;
 	ArrayAdapter<String> adp;
-	private String SERVER_IP = "http://10.0.0.14:3000";
+	private String SERVER_IP = "http://10.10.10.105:3000";//"http://10.0.0.14:3000";
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -42,11 +43,21 @@ public class ChatActivity extends Activity{
 		initializeComponents();
 	}
 	
+	@Override
+    protected void onStop() {
+        super.onStop();
+        IOAcknowledge ack = new IOAcknowledge() {
+		    @Override
+		    public void ack(Object... args) {}
+		};
+		socket.emit("leave_room", ack, getIntent().getExtras().getString("room"));
+    }
+	
 	private void initializeComponents()
 	{
 		setTitle(getIntent().getStringExtra("room"));
-		input_text = (EditText) findViewById(R.id.input_text);
-		btn_Send = (Button) findViewById(R.id.btn_Send);
+		input_text = (BootstrapEditText) findViewById(R.id.input_text);
+		btn_Send = (BootstrapButton) findViewById(R.id.btn_Send);
 		listView = (ListView) findViewById(R.id.listView);
 		socketListener = new SocketListener();
 		messages = new ArrayList<String>();

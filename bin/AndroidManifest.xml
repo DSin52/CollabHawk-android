@@ -47,6 +47,15 @@
             android:name="com.collabhawk_android.ChatActivity"
             android:label="@string/title_activity_search" >
         </activity>
+        <activity
+            android:name="com.collabhawk_android.CreateAccount"
+            android:label="@string/title_activity_search" 
+            android:windowSoftInputMode="adjustPan">
+        </activity>
+        <activity
+            android:name="com.collabhawk_android.ForgotPassword"
+            android:label="@string/title_activity_search" >
+        </activity>
     </application>
 
 </manifest>
