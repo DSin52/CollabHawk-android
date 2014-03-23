@@ -7,18 +7,26 @@ import java.io.InputStreamReader;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 import java.util.concurrent.ExecutionException;
 
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
+import org.apache.http.NameValuePair;
 import org.apache.http.client.ClientProtocolException;
 import org.apache.http.client.HttpClient;
+import org.apache.http.client.entity.UrlEncodedFormEntity;
 import org.apache.http.client.methods.HttpGet;
+import org.apache.http.client.methods.HttpPost;
 import org.apache.http.impl.client.DefaultHttpClient;
+import org.apache.http.message.BasicNameValuePair;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
@@ -33,22 +41,25 @@ import android.view.View.OnClickListener;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
-import android.widget.ArrayAdapter;
-import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListView;
+import android.widget.SimpleAdapter;
 import android.widget.Toast;
 
+import com.beardedhen.androidbootstrap.BootstrapButton;
+import com.beardedhen.androidbootstrap.BootstrapEditText;
+
 public class SearchActivity extends Activity {
-	private EditText searchField;
+	private BootstrapEditText searchField;
 	private ListView searchView;
-	private Button searchButton;
+	private BootstrapButton searchButton;
 	private final String KEY="AIzaSyDJhytcECfUZ64UX-PqFPifGJc5gvrhppk";
 	private User loggedInUser;
 	private double lat, lon;
 	private LocationManager locationManager;
 	private ArrayList<String> placeNames;
 	private ArrayList<String> placeLocation;
+	private String SERVER_IP = "http://10.10.10.105:3000";//"http://10.0.0.14:3000";
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -68,9 +79,9 @@ public class SearchActivity extends Activity {
 	private void initializeComponents() 
 	{
 		setTitle("Search Places");
-		searchField = (EditText) findViewById(R.id.searchText);
+		searchField = (BootstrapEditText) findViewById(R.id.searchText);
 		searchView = (ListView) findViewById(R.id.searchView);
-		searchButton = (Button) findViewById(R.id.searchButton);
+		searchButton = (BootstrapButton) findViewById(R.id.searchButton);
 		
 		loggedInUser = new User(getIntent().getStringExtra("Username"),
 				getIntent().getStringExtra("First_Name"),
@@ -92,13 +103,15 @@ public class SearchActivity extends Activity {
 	            i.putExtra("First_Name", getIntent().getStringExtra("First_Name"));
 	            i.putExtra("Last_Name", getIntent().getStringExtra("Last_Name"));
 	            i.putExtra("id", getIntent().getStringExtra("id"));
-	            i.putExtra("room", arg0.getItemAtPosition(arg2).toString());
+	            i.putExtra("room", placeNames.get(arg2));
 	            startActivity(i);
 			}
 			
 		});
 		
 		searchButton.setOnClickListener(new OnClickListener() {
+			@SuppressWarnings("unchecked")
+			@SuppressLint("NewApi")
 			@Override
 			public void onClick(View v) {
 			    Criteria criteria = new Criteria();
@@ -129,16 +142,24 @@ public class SearchActivity extends Activity {
 						}
 					} else {
 						placeNames.add("No results found");
+						placeLocation.add("");
 						searchView.setEnabled(false);
-
 					}
-					
-					
-					ArrayAdapter<String> adp=new ArrayAdapter<String> (getBaseContext(),
-							android.R.layout.simple_dropdown_item_1line,placeNames);
-					adp.setDropDownViewResource(android.R.layout.simple_dropdown_item_1line);
-					
-					searchView.setAdapter(adp);
+					String numClientJson = new NumClientsAsyncTask().executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR, placeNames).get();
+				    JSONObject numClientObject = new JSONObject(numClientJson);
+					List<Map<String, String>> data = new ArrayList<Map<String, String>>();
+					for (int i = 0; i < placeNames.size(); i++) {
+					    Map<String, String> datum = new HashMap<String, String>(2);
+					    datum.put("name", placeNames.get(i));
+					    datum.put("numClients", "Number of Users: " + numClientObject.getJSONArray("num_clients").get(i));
+					    data.add(datum);
+					}
+					SimpleAdapter adapter = new SimpleAdapter(getBaseContext(), data,
+					                                          android.R.layout.simple_list_item_2,
+					                                          new String[] {"name", "numClients"},
+					                                          new int[] {android.R.id.text1,
+					                                                     android.R.id.text2});
+					searchView.setAdapter(adapter);
 				   
 				} catch (InterruptedException e) {
 					// TODO Auto-generated catch block
@@ -217,6 +238,65 @@ public class SearchActivity extends Activity {
 			return builder.toString();
 		}
 		
+	}
+	
+	private class NumClientsAsyncTask extends AsyncTask<ArrayList<String>, Void, String>
+	{
+
+		@Override
+		protected String doInBackground(ArrayList<String>... arg0) {
+			// Create a new HttpClient and Post Header
+		    HttpClient httpclient = new DefaultHttpClient();
+		    HttpPost httppost = new HttpPost(SERVER_IP + "/chat/clients");
+
+		    try {
+		    	// Add your data
+		        List<NameValuePair> nameValuePairs = new ArrayList<NameValuePair>(2);
+		        System.out.println(convertArray(arg0[0]));
+		        nameValuePairs.add(new BasicNameValuePair("rooms", convertArray(arg0[0])));
+		        httppost.setEntity(new UrlEncodedFormEntity(nameValuePairs));
+
+		        // Execute HTTP Post Request
+		        HttpResponse response = httpclient.execute(httppost);
+		        HttpEntity entity = response.getEntity();
+		        
+		        if (entity != null)
+		        {
+		        	String result = "";
+		            InputStream inputStream = entity.getContent();
+		            // json is UTF-8 by default
+		            BufferedReader reader = new BufferedReader(new InputStreamReader(inputStream, "UTF-8"), 8);
+		            StringBuilder sb = new StringBuilder();
+
+		            String line = null;
+		            while ((line = reader.readLine()) != null)
+		            {
+		                sb.append(line + "\n");
+		            }
+		            result = sb.toString();
+					return result;
+		        }
+		    } catch (ClientProtocolException e) {
+		        // TODO Auto-generated catch block
+		    } catch (IOException e) {
+		        // TODO Auto-generated catch block
+		    }
+			return null;
+		}
+		
+	}
+	
+	private String convertArray(ArrayList<String> rooms)
+	{
+		StringBuilder result = new StringBuilder("");
+		for (int i = 0; i < rooms.size(); i++)
+		{
+			if (i != rooms.size() - 1)
+				result.append(rooms.get(i).toString() + ",");
+			else
+				result.append(rooms.get(i).toString());
+		}
+		return result.toString();
 	}
 
 }

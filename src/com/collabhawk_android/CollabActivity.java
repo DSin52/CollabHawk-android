@@ -28,14 +28,15 @@ import android.os.Bundle;
 import android.view.Menu;
 import android.view.View;
 import android.view.View.OnClickListener;
-import android.widget.Button;
-import android.widget.EditText;
 import android.widget.Toast;
 
+import com.beardedhen.androidbootstrap.BootstrapButton;
+import com.beardedhen.androidbootstrap.BootstrapEditText;
+
 public class CollabActivity extends Activity {
-	private Button logInButton;
-	private EditText userName, password;
-	private String SERVER_IP = "http://10.0.0.14:3000";
+	private BootstrapButton logInButton, createAccountButton, forgotPasswordButton;
+	private BootstrapEditText userName, password;
+	private String SERVER_IP = "http://10.10.10.105:3000";//"http://10.0.0.14:3000";
 
 	
 	@Override
@@ -56,9 +57,11 @@ public class CollabActivity extends Activity {
 	
 	private void instantiateItems() 
 	{
-		logInButton = (Button) findViewById(R.id.login);
-		userName = (EditText) findViewById(R.id.userName);
-		password = (EditText) findViewById(R.id.password);
+		logInButton = (BootstrapButton) findViewById(R.id.loginButton);
+		createAccountButton = (BootstrapButton) findViewById(R.id.createAccountButton);
+		forgotPasswordButton = (BootstrapButton) findViewById(R.id.forgotPasswordButton);
+		userName = (BootstrapEditText) findViewById(R.id.userName);
+		password = (BootstrapEditText) findViewById(R.id.password);
 		
 		logInButton.setOnClickListener(new OnClickListener() {
 
@@ -105,6 +108,26 @@ public class CollabActivity extends Activity {
 						e.printStackTrace();
 					}
 			}	
+		});
+		
+		createAccountButton.setOnClickListener(new OnClickListener() {
+
+			@Override
+			public void onClick(View arg0) {
+				Intent i = new Intent(getApplicationContext(), CreateAccount.class);
+				startActivity(i);
+			}
+			
+		});
+		
+		forgotPasswordButton.setOnClickListener(new OnClickListener() {
+
+			@Override
+			public void onClick(View arg0) {
+				Intent i = new Intent(getApplicationContext(), ForgotPassword.class);
+				startActivity(i);
+			}
+			
 		});
 	}
 	
