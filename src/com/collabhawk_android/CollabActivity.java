@@ -121,7 +121,7 @@ public class CollabActivity extends Activity {
 		protected String doInBackground(Void... arg0) {
 			// Create a new HttpClient and Post Header
 		    HttpClient httpclient = new DefaultHttpClient();
-		    HttpPost httppost = new HttpPost("http://192.168.1.9:3000/user/login");
+		    HttpPost httppost = new HttpPost("http://10.10.10.111:3000/user/login");
 
 		    try {
 		    	String userNameString = userName.getText().toString();

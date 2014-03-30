@@ -59,7 +59,7 @@ public class ChatActivity extends Activity{
 	private void connectSockets()
 	{
 		try {
-			socket = new SocketIO("http://192.168.1.9:3000");
+			socket = new SocketIO("http://10.10.10.111:3000");
 			socket.connect(new IOCallback() {
 			    @Override
 			    public void on(String event, IOAcknowledge ack, Object... args) {
