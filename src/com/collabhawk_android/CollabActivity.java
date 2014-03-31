@@ -28,18 +28,22 @@ import android.os.Bundle;
 import android.view.Menu;
 import android.view.View;
 import android.view.View.OnClickListener;
-import android.widget.Button;
-import android.widget.EditText;
 import android.widget.Toast;
 
+import com.beardedhen.androidbootstrap.BootstrapButton;
+import com.beardedhen.androidbootstrap.BootstrapEditText;
+
 public class CollabActivity extends Activity {
-	private Button logInButton;
-	private EditText userName, password;
+	private BootstrapButton logInButton, createAccountButton, forgotPasswordButton;
+	private BootstrapEditText userName, password;
+	private String SERVER_IP = "http://mickey.cs.vt.edu:3000";
+
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_collab);
+		setTitle("Collab Hawk");
 		
 		instantiateItems();
 	}
@@ -53,9 +57,11 @@ public class CollabActivity extends Activity {
 	
 	private void instantiateItems() 
 	{
-		logInButton = (Button) findViewById(R.id.login);
-		userName = (EditText) findViewById(R.id.userName);
-		password = (EditText) findViewById(R.id.password);
+		logInButton = (BootstrapButton) findViewById(R.id.loginButton);
+		createAccountButton = (BootstrapButton) findViewById(R.id.createAccountButton);
+		forgotPasswordButton = (BootstrapButton) findViewById(R.id.forgotPasswordButton);
+		userName = (BootstrapEditText) findViewById(R.id.userName);
+		password = (BootstrapEditText) findViewById(R.id.password);
 		
 		logInButton.setOnClickListener(new OnClickListener() {
 
@@ -103,6 +109,26 @@ public class CollabActivity extends Activity {
 					}
 			}	
 		});
+		
+		createAccountButton.setOnClickListener(new OnClickListener() {
+
+			@Override
+			public void onClick(View arg0) {
+				Intent i = new Intent(getApplicationContext(), CreateAccount.class);
+				startActivity(i);
+			}
+			
+		});
+		
+		forgotPasswordButton.setOnClickListener(new OnClickListener() {
+
+			@Override
+			public void onClick(View arg0) {
+				Intent i = new Intent(getApplicationContext(), ForgotPassword.class);
+				startActivity(i);
+			}
+			
+		});
 	}
 	
 	private void showToast(String message) 
@@ -121,7 +147,7 @@ public class CollabActivity extends Activity {
 		protected String doInBackground(Void... arg0) {
 			// Create a new HttpClient and Post Header
 		    HttpClient httpclient = new DefaultHttpClient();
-		    HttpPost httppost = new HttpPost("http://10.10.10.111:3000/user/login");
+		    HttpPost httppost = new HttpPost(SERVER_IP + "/user/login");
 
 		    try {
 		    	String userNameString = userName.getText().toString();
