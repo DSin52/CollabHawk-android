@@ -57,9 +57,9 @@ public class CreateAccount extends Activity {
 	private void instantiateItems() 
 	{
 		createAccountButton = (BootstrapButton) findViewById(R.id.createAccountButton);
-		firstName = (BootstrapEditText) findViewById(R.id.firstName);
-		lastName = (BootstrapEditText) findViewById(R.id.lastName);
-		email = (BootstrapEditText) findViewById(R.id.email);
+//		firstName = (BootstrapEditText) findViewById(R.id.firstName);
+//		lastName = (BootstrapEditText) findViewById(R.id.lastName);
+//		email = (BootstrapEditText) findViewById(R.id.email);
 		userName = (BootstrapEditText) findViewById(R.id.userName);
 		password = (BootstrapEditText) findViewById(R.id.password);
 		
@@ -68,15 +68,15 @@ public class CreateAccount extends Activity {
 			@Override
 			public void onClick(View v) {
 				
-				String firstNameString = firstName.getText().toString();
-				String lastNameString = lastName.getText().toString();
-				String emailString = email.getText().toString();
+//				String firstNameString = firstName.getText().toString();
+//				String lastNameString = lastName.getText().toString();
+//				String emailString = email.getText().toString();
 				String userNameString = userName.getText().toString();
 				String passwordString = password.getText().toString();
 					try {
-						if (firstNameString != null && lastNameString != null && emailString != null &&
-								userNameString != null && passwordString != null && firstNameString.length() > 0 &&
-								lastNameString.length() > 0 && emailString.length() > 0 && userNameString.length() > 0 && 
+						if (/*firstNameString != null && lastNameString != null && emailString != null &&*/
+								userNameString != null && passwordString != null && /*firstNameString.length() > 0 &&
+								lastNameString.length() > 0 && emailString.length() > 0 && */userNameString.length() > 0 && 
 								passwordString.length() > 0)
 						{
 							String result = new CreateAccountAsyncTask().execute().get();
@@ -131,17 +131,17 @@ public class CreateAccount extends Activity {
 		    HttpPost httppost = new HttpPost(SERVER_IP + "/user/create");
 
 		    try {
-		    	String firstNameString = firstName.getText().toString();
-				String lastNameString = lastName.getText().toString();
-				String emailString = email.getText().toString();
+//		    	String firstNameString = firstName.getText().toString();
+//				String lastNameString = lastName.getText().toString();
+//				String emailString = email.getText().toString();
 		    	String userNameString = userName.getText().toString();
 				String passwordString = password.getText().toString();
 				
 				// Add your data
 		        List<NameValuePair> nameValuePairs = new ArrayList<NameValuePair>(2);
-		        nameValuePairs.add(new BasicNameValuePair("First_Name", firstNameString));
-		        nameValuePairs.add(new BasicNameValuePair("Last_Name", lastNameString));
-		        nameValuePairs.add(new BasicNameValuePair("Email", emailString));
+//		        nameValuePairs.add(new BasicNameValuePair("First_Name", firstNameString));
+//		        nameValuePairs.add(new BasicNameValuePair("Last_Name", lastNameString));
+//		        nameValuePairs.add(new BasicNameValuePair("Email", emailString));
 		        nameValuePairs.add(new BasicNameValuePair("Username", userNameString));
 		        nameValuePairs.add(new BasicNameValuePair("Password", passwordString));
 		        httppost.setEntity(new UrlEncodedFormEntity(nameValuePairs));

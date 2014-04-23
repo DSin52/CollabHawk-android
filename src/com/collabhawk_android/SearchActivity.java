@@ -59,6 +59,7 @@ public class SearchActivity extends Activity {
 	private LocationManager locationManager;
 	private ArrayList<String> placeNames;
 	private ArrayList<String> placeLocation;
+	private ArrayList<String> numClients;
 	private String SERVER_IP = "http://mickey.cs.vt.edu:3000";
 	
 	@Override
@@ -83,10 +84,10 @@ public class SearchActivity extends Activity {
 		searchView = (ListView) findViewById(R.id.searchView);
 		searchButton = (BootstrapButton) findViewById(R.id.searchButton);
 		
-		loggedInUser = new User(getIntent().getStringExtra("Username"),
-				getIntent().getStringExtra("First_Name"),
-				getIntent().getStringExtra("Last_Name"),
-				getIntent().getStringExtra("Email"));
+		loggedInUser = new User(getIntent().getStringExtra("Username"));
+//				getIntent().getStringExtra("First_Name"),
+//				getIntent().getStringExtra("Last_Name"),
+//				getIntent().getStringExtra("Email"));
 	    locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
 	    
 	    placeNames = new ArrayList<String>();
@@ -99,9 +100,9 @@ public class SearchActivity extends Activity {
 					long arg3) {
 				Intent i = new Intent(getApplicationContext(), ChatActivity.class);
 	            i.putExtra("Username", getIntent().getStringExtra("Username"));
-	            i.putExtra("Email", getIntent().getStringExtra("Email"));
-	            i.putExtra("First_Name", getIntent().getStringExtra("First_Name"));
-	            i.putExtra("Last_Name", getIntent().getStringExtra("Last_Name"));
+//	            i.putExtra("Email", getIntent().getStringExtra("Email"));
+//	            i.putExtra("First_Name", getIntent().getStringExtra("First_Name"));
+//	            i.putExtra("Last_Name", getIntent().getStringExtra("Last_Name"));
 	            i.putExtra("id", getIntent().getStringExtra("id"));
 	            i.putExtra("room", placeNames.get(arg2));
 	            startActivity(i);
@@ -131,7 +132,6 @@ public class SearchActivity extends Activity {
 					String totalJson = new SearchAsyncTask().execute().get();
 					JSONObject jObject = new JSONObject(totalJson);
 					JSONArray results = jObject.getJSONArray("results");
-					
 					if (results.length() > 0)
 					{
 						searchView.setEnabled(true);
@@ -146,13 +146,14 @@ public class SearchActivity extends Activity {
 						placeLocation.add("");
 						searchView.setEnabled(false);
 					}
-					String numClientJson = new NumClientsAsyncTask().executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR, placeNames).get();
-				    JSONObject numClientObject = new JSONObject(numClientJson);
 					List<Map<String, String>> data = new ArrayList<Map<String, String>>();
 					for (int i = 0; i < placeNames.size(); i++) {
-					    Map<String, String> datum = new HashMap<String, String>(2);
+					    Map<String, String> datum = new HashMap<String, String>();
 					    datum.put("name", placeNames.get(i));
-					    datum.put("numClients", "Number of Users: " + numClientObject.getJSONArray("num_clients").get(i));
+						String numClientJson = new NumClientsAsyncTask().executeOnExecutor(AsyncTask.SERIAL_EXECUTOR, placeNames).get();
+					    JSONObject numClientObject = new JSONObject(numClientJson);
+					    System.out.println("USERS: " + numClientObject.getJSONArray("num_clients").get(0));
+//					    datum.put("numClients", "Number of Users: " + numClientObject.getJSONArray("num_clients").get(i));
 					    data.add(datum);
 					}
 					SimpleAdapter adapter = new SimpleAdapter(getBaseContext(), data,
@@ -275,6 +276,7 @@ public class SearchActivity extends Activity {
 		                sb.append(line + "\n");
 		            }
 		            result = sb.toString();
+		            System.out.println("TESTING: " + result);
 					return result;
 		        }
 		    } catch (ClientProtocolException e) {

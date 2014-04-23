@@ -59,7 +59,7 @@ public class CollabActivity extends Activity {
 	{
 		logInButton = (BootstrapButton) findViewById(R.id.loginButton);
 		createAccountButton = (BootstrapButton) findViewById(R.id.createAccountButton);
-		forgotPasswordButton = (BootstrapButton) findViewById(R.id.forgotPasswordButton);
+//		forgotPasswordButton = (BootstrapButton) findViewById(R.id.forgotPasswordButton);
 		userName = (BootstrapEditText) findViewById(R.id.userName);
 		password = (BootstrapEditText) findViewById(R.id.password);
 		
@@ -81,9 +81,9 @@ public class CollabActivity extends Activity {
 					            {
 						            Intent i = new Intent(getApplicationContext(), SearchActivity.class);
 						            i.putExtra("Username", jObject.getString("Username"));
-						            i.putExtra("Email", jObject.getString("Email"));
-						            i.putExtra("First_Name", jObject.getString("First_Name"));
-						            i.putExtra("Last_Name", jObject.getString("Last_Name"));
+//						            i.putExtra("Email", jObject.getString("Email"));
+//						            i.putExtra("First_Name", jObject.getString("First_Name"));
+//						            i.putExtra("Last_Name", jObject.getString("Last_Name"));
 						            i.putExtra("id", jObject.getString("id"));
 						            startActivity(i);
 						            finish();
@@ -120,15 +120,15 @@ public class CollabActivity extends Activity {
 			
 		});
 		
-		forgotPasswordButton.setOnClickListener(new OnClickListener() {
-
-			@Override
-			public void onClick(View arg0) {
-				Intent i = new Intent(getApplicationContext(), ForgotPassword.class);
-				startActivity(i);
-			}
-			
-		});
+//		forgotPasswordButton.setOnClickListener(new OnClickListener() {
+//
+//			@Override
+//			public void onClick(View arg0) {
+//				Intent i = new Intent(getApplicationContext(), ForgotPassword.class);
+//				startActivity(i);
+//			}
+//			
+//		});
 	}
 	
 	private void showToast(String message) 

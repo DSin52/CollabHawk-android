@@ -121,21 +121,21 @@ public final class R {
 		public static final int thumbnail_circle_minimal = 0x7f02001c;
 	}
 	public static final class id {
-		public static final int action_settings = 0x7f09001f;
-		public static final int container = 0x7f090015;
-		public static final int dimensionsLabel = 0x7f090017;
-		public static final int image = 0x7f090018;
-		public static final int layout = 0x7f090010;
-		public static final int lblColA = 0x7f09001d;
-		public static final int lblColB = 0x7f09001e;
-		public static final int lblLeft = 0x7f090011;
-		public static final int lblMiddle = 0x7f090012;
-		public static final int lblRight = 0x7f090013;
-		public static final int lblSubTitle = 0x7f09001c;
-		public static final int lblText = 0x7f090019;
-		public static final int lblTitle = 0x7f09001b;
-		public static final int placeholder = 0x7f090016;
-		public static final int txtText = 0x7f090014;
+		public static final int action_settings = 0x7f09001d;
+		public static final int container = 0x7f090013;
+		public static final int dimensionsLabel = 0x7f090015;
+		public static final int image = 0x7f090016;
+		public static final int layout = 0x7f09000e;
+		public static final int lblColA = 0x7f09001b;
+		public static final int lblColB = 0x7f09001c;
+		public static final int lblLeft = 0x7f09000f;
+		public static final int lblMiddle = 0x7f090010;
+		public static final int lblRight = 0x7f090011;
+		public static final int lblSubTitle = 0x7f09001a;
+		public static final int lblText = 0x7f090017;
+		public static final int lblTitle = 0x7f090019;
+		public static final int placeholder = 0x7f090014;
+		public static final int txtText = 0x7f090012;
 	}
 	public static final class layout {
 		public static final int bootstrap_button = 0x7f030005;

@@ -77,8 +77,8 @@ public class ForgotPassword extends Activity {
 						            Intent i = new Intent(getApplicationContext(), CollabActivity.class);
 						            i.putExtra("Username", jObject.getString("Username"));
 						            i.putExtra("Email", jObject.getString("Email"));
-						            i.putExtra("First_Name", jObject.getString("First_Name"));
-						            i.putExtra("Last_Name", jObject.getString("Last_Name"));
+//						            i.putExtra("First_Name", jObject.getString("First_Name"));
+//						            i.putExtra("Last_Name", jObject.getString("Last_Name"));
 						            i.putExtra("id", jObject.getString("id"));
 						            startActivity(i);
 						            finish();
